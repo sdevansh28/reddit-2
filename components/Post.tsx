@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 type Props = {post: Post}
 
 function Post({post} : Props) {
-
+  console.log(post);
   if(!post) return (<div><Jelly size={50} color='#ff4501' /></div>)
 
   const {data: session} = useSession();

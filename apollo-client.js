@@ -1,7 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
-    uri: process.env.ENDPOINT_URI,
+  //paste your stepzen uri here
+    uri: 'https://beecher.stepzen.net/api/endpoint/__graphql',
     headers: {
       Authorization: `apikey ${process.env.NEXT_PUBLIC_API_KEY}`
     },
