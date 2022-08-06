@@ -13,12 +13,12 @@ import toast from 'react-hot-toast'
 type Props = {post: Post}
 
 function Post({post} : Props) {
-  console.log(post);
   if(!post) return (<div><Jelly size={50} color='#ff4501' /></div>)
 
   const {data: session} = useSession();
 
   const [vote,setVote] = useState<boolean>();
+  const [voteCount,setVoteCount] = useState<number>(0);
 
   const {data,loading} = useQuery(GET_ALL_VOTES_BY_POST_ID, {
     variables: {id: post?.id}
@@ -40,8 +40,6 @@ function Post({post} : Props) {
 
     if(vote && isUpvote) return;
     if(vote === false && !isUpvote) return;
-
-    console.log('voting....', isUpvote);
 
     const variables = {
       post_id: post.id,
@@ -71,6 +69,10 @@ function Post({post} : Props) {
 
     const vote = votes?.find(vote => vote.username === session?.user?.name)?.upvote
     setVote(vote);
+    let voteCnt=0;
+    voteCnt += votes?.filter(vote => vote.upvote===true).length;
+    voteCnt -= votes?.filter(vote => vote.upvote===false).length;
+    setVoteCount(voteCnt);
     console.log(vote)
 
   },[data])
@@ -83,7 +85,7 @@ function Post({post} : Props) {
         <div className='flex flex-col items-center justify-start space-y-1 
         rounded-l-md bg-gray-50 p-4 text-gray-400 '>
           <ArrowUpIcon onClick={()=>upVote(true)} className={`voteButtons hover:text-red-400 ${vote && 'text-red-400'} `} />
-          <p className='text-xs font-bold text-black'>0</p>
+          <p className='text-xs font-bold text-black'>{voteCount}</p>
           <ArrowDownIcon onClick={()=>upVote(false)} className={`voteButtons hover:text-blue-400 ${vote===false && 'text-blue-400'}`} />
         </div>
 
